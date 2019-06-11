@@ -1,0 +1,13 @@
+
+Dear {{ user.firstname }} {{ user.lastname }},
+
+	I'm sorry!
+	
+	It seems that you have been rejected to use the 
+	Arabdicator at this time.
+	
+	Please try again after a few days.
+	
+Thanks,
+
+Arabdicator Administrator 

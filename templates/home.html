@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}ABRC PM | Home{% endblock %}
+
+{% block content %}
+
+<div class="row-fluid">
+	<!-- Main Content -->
+	<div class="span8">
+		<div class="hero-unit alert-info muted" style="padding: 40px;">
+			<h2>ABRC Project Management</h2>
+			<div class="lead">
+			 	<p>
+			 		Arabidopsis Biological Resource Center Project Management system was
+			 		written by Chris Bartos as a free alternative to JIRA.
+			 	</p>
+			 	<p>
+			 		It was designed to be very similar to JIRA with the added ability to
+			 		to be as extensible as necessary.
+			 	</p>
+			 </div>
+		  	<p>
+		    	<a class="btn btn-primary btn-large">
+		      		Tutorial »
+		    	</a>
+		    	<a class="btn btn-large" id="btn-request-invite">
+		    		Request Invite »
+		    	</a>
+		  	</p>
+		  	<div class="alert alert-error" id="failureRequest" style="display:none;margin-top:50px;">
+	  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Error!</strong> <span id='reason'></span>
+			</div>
+		  	<div class="alert alert-success" id="successRequest" style="display:none;margin-top:50px;">
+	  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<strong>Success!</strong> Thank you for requesting membership! We'll be in touch.
+			</div>
+		  	<div id="request-invite" style="display:none;margin-top:50px;">
+		  		<h4>Please enter your info to request an invite:</h4>
+		  		<input type="text" id="firstNameRequest" name="firstName" placeholder="Firstname" class="input-xlarge"/><br/>
+		  		<input type="text" id="lastNameRequest" name="lastName" placeholder="Lastname" class="input-xlarge"/><br/>
+		  		<input type="text" id="emailRequest" name="email" placeholder="Email" class="input-xlarge"/><br/>
+		  		<input type="submit" id="btn-send-request" class="btn btn-primary" value="Request Membership" />
+		  	</div>
+		</div>
+	</div>
+	
+	<!-- Sidebar -->
+	<div class="span4">
+		<div class="alert alert-success" id="init-success">
+  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Success!</strong> You made it to the Arabidopsis Biological Resource Center's 
+			first ever project management system!
+		</div>
+		
+		<div class="alert alert-error" id="init-warning">
+  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Warning!</strong> You will not be able to sign up unless you were formally
+			invited!
+		</div>
+		<div class="alert alert-success" id="user-success" style="display:none;">
+  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Success!</strong> You have successfully created a username! Thank you 
+			very much for using this service. Please login above!
+		</div>
+		<div class="alert alert-info" id="user-info" style="display:none;">
+  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Just so you know!</strong>
+			This software is still in testing. Please email <code>bartos.25@osu.edu</code>
+			for any questions or concerns! Thank you!
+			
+		</div>
+		<div class="alert alert-error" id="user-failure" style="display:none;">
+  			<button type="button" class="close" data-dismiss="alert">&times;</button>
+			<strong>Oops!!</strong>
+			<span id="user-error-message"></span>
+		</div>
+		
+		<div id="signupform">
+			<legend>Sign Up!</legend>
+			<input type="text" id="firstnameSignup" name="firstname" placeholder="Firstname" class="input-xlarge"/>
+			<input type="text" id="lastnameSignup" name="lastname" placeholder="Lastname" class="input-xlarge"/>
+			<input type="text" id="emailSignup" name="email" placeholder="Email" class="input-xlarge"/>
+		  	<input type="text" id="usernameSignup" name="username" placeholder="Username" class="input-xlarge"/>
+		  	<input type="password" id="passwordSignup" name="password" placeholder="Password" class="input-xlarge"/>
+		  	<input type="password" id="passwordconfirmSignup" name="passwordconfirm" placeholder="Confirm Password" class="input-xlarge"/>
+	  	<div>
+	  		
+	  	</div>
+	  	<input type="submit" id="signup" class="btn btn-primary" value="Sign Up!" />
+		
+	</div>
+</div>
+
+{% endblock %}

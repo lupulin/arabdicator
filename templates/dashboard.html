@@ -1,0 +1,92 @@
+{% extends "system.html" %}
+
+{% block content %}
+<!-- MY MODALS -->
+
+
+<div class="row-fluid" style="margin-top: 15px;">
+	<!-- Main Content -->
+	<div class="span6">
+		<div class="hero-unit alert main-content" style="padding:10px;">
+			<h3>Projects</h3>
+			<div id="project-table"><img src="/static/img/ajax-spinner.gif" /></div>
+		</div>
+		
+	</div>
+
+	<!-- Sidebar -->
+	<div class="span6">
+		
+		<div class="hero-unit alert upcoming-events" id="calendar" style="padding:10px;">
+			<h3>Upcoming Events</h3>
+			<div id="upcoming-events"><img src="/static/img/ajax-spinner.gif" /></div>
+		</div>
+		
+		<div class="hero-unit alert recent-activity" id="activity" style="padding:10px;">
+			<h3>Recent Activity</h3>
+			<div id="recent-activity"><img src="/static/img/ajax-spinner.gif" /></div>
+		</div>
+	</div>
+</div>	
+<div class="hero-unit alert main-content" style="padding:10px;">
+	<h3>My Issues</h3>
+	<input type="text" class="input-xxlarge" id="issue-filter" placeholder="Search all issues" />
+	<ul id="filter" class="nav nav-tabs">
+	  <li class="active"><a href="#all" data-toggle="tab">All</a></li>
+	  <li class=""><a href="#assigned" data-toggle="tab">Assigned</a></li>
+	  <li class=""><a href="#reported" data-toggle="tab">Reporter</a></li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Priority <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#priority-1" data-toggle="tab">Blocker</a></li>
+          <li class=""><a href="#priority-2" data-toggle="tab">Critical</a></li>
+          <li class=""><a href="#priority-3" data-toggle="tab">Major</a></li>
+          <li class=""><a href="#priority-4" data-toggle="tab">Normal</a></li>
+          <li class=""><a href="#priority-5" data-toggle="tab">Minor</a></li>
+          <li class=""><a href="#priority-6" data-toggle="tab">Trivial</a></li>
+        </ul>
+      </li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#status-1" data-toggle="tab">Open</a></li>
+          <li class=""><a href="#status-2" data-toggle="tab">In Progress</a></li>
+          <li class=""><a href="#status-3" data-toggle="tab">Reopened</a></li>
+          <li class=""><a href="#status-4" data-toggle="tab">Resolved</a></li>
+          <li class=""><a href="#status-5" data-toggle="tab">Closed</a></li>
+        </ul>
+      </li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Issue Type <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#type-1" data-toggle="tab">Bug</a></li>
+          <li class=""><a href="#type-2" data-toggle="tab">Improvement</a></li>
+          <li class=""><a href="#type-3" data-toggle="tab">New Feature</a></li>
+          <li class=""><a href="#type-4" data-toggle="tab">Task</a></li>
+        </ul>
+      </li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resolution <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#resolution-1" data-toggle="tab">Fixed</a></li>
+          <li class=""><a href="#resolution-2" data-toggle="tab">Won't Fix</a></li>
+          <li class=""><a href="#resolution-3" data-toggle="tab">Duplicate</a></li>
+          <li class=""><a href="#resolution-4" data-toggle="tab">Incomplete</a></li>
+          <li class=""><a href="#resolution-5" data-toggle="tab">Cannot Reproduce</a></li>
+          <li class=""><a href="#resolution-6" data-toggle="tab">Not Fixed</a></li>
+        </ul>
+      </li>
+	</ul>
+	<div class="tab-content">
+	  <div class="tab-pane active" id="assigned"></div>
+	  <div class="tab-pane" id="priority"></div>
+	  <div class="tab-pane" id="resolution"></div>
+	  <div class="tab-pane" id="status"></div>
+	  <div class="tab-pane" id="issue-type"></div>
+	</div>
+	<div id="my-issue-table">
+		<img src="/static/img/ajax-spinner.gif" />
+	</div>
+	<div id="more-issues" style="display:none; margin:auto; width:100px; font-size:12px"><a href="#">Load more Issues</a> </div>
+</div>
+{% endblock %}

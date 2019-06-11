@@ -1,0 +1,104 @@
+{% extends "system.html" %}
+
+{% block title %}Arabdicator | User details{% endblock %}
+
+{% block content %}
+
+<h3>{{ user.first_name }} {{ user.last_name }} Details</h3>
+<script>
+	window.user_id = {{ user.id }};
+</script>
+<table class="table table-striped table-bordered table-hover" style="width: 50%">
+	
+	<tr>
+		
+		<td>Name:</td>
+		{% if user.first_name == "Anonymous" %}
+		<td>{{ user.email }}</td>
+		{% else %}
+		<td>{{ user.first_name }} {{ user.last_name }}</td>
+		{% endif %}
+	</tr>
+	
+	<tr>
+		
+		<td>Email:</td>
+		<td><a href="mailto:{{ user.email }}">{{ user.email }}</a></td>
+		
+	</tr>
+	
+	<tr>
+		
+		<td>Username:</td>
+		<td>{{ user.username }}</td>
+		
+	</tr>
+	
+	
+</table>
+
+<h3>{{ user.first_name }} {{ user.last_name }} Issues</h3>
+
+{% if not issues.all %}
+	<p>There are no issues here</p>
+{% else %}
+	<input type="text" class="input-xxlarge" id="issue-filter" placeholder="Search all issues" />
+	<ul id="filter" class="nav nav-tabs">
+	  <li class="active"><a href="#all" data-toggle="tab">All</a></li>
+	  <!-- <li class=""><a href="#assigned" data-toggle="tab">Assigned</a></li>  -->
+	  <!-- <li class=""><a href="#reported" data-toggle="tab">Reporter</a></li> -->
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Priority <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#priority-1" data-toggle="tab">Blocker</a></li>
+          <li class=""><a href="#priority-2" data-toggle="tab">Critical</a></li>
+          <li class=""><a href="#priority-3" data-toggle="tab">Major</a></li>
+          <li class=""><a href="#priority-4" data-toggle="tab">Normal</a></li>
+          <li class=""><a href="#priority-5" data-toggle="tab">Minor</a></li>
+          <li class=""><a href="#priority-6" data-toggle="tab">Trivial</a></li>
+        </ul>
+      </li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Status <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#status-1" data-toggle="tab">Open</a></li>
+          <li class=""><a href="#status-2" data-toggle="tab">In Progress</a></li>
+          <li class=""><a href="#status-3" data-toggle="tab">Reopened</a></li>
+          <li class=""><a href="#status-4" data-toggle="tab">Resolved</a></li>
+          <li class=""><a href="#status-5" data-toggle="tab">Closed</a></li>
+        </ul>
+      </li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Issue Type <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#type-1" data-toggle="tab">Bug</a></li>
+          <li class=""><a href="#type-2" data-toggle="tab">Improvement</a></li>
+          <li class=""><a href="#type-3" data-toggle="tab">New Feature</a></li>
+          <li class=""><a href="#type-4" data-toggle="tab">Task</a></li>
+        </ul>
+      </li>
+	  <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Resolution <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+          <li class=""><a href="#resolution-1" data-toggle="tab">Fixed</a></li>
+          <li class=""><a href="#resolution-2" data-toggle="tab">Won't Fix</a></li>
+          <li class=""><a href="#resolution-3" data-toggle="tab">Duplicate</a></li>
+          <li class=""><a href="#resolution-4" data-toggle="tab">Incomplete</a></li>
+          <li class=""><a href="#resolution-5" data-toggle="tab">Cannot Reproduce</a></li>
+          <li class=""><a href="#resolution-6" data-toggle="tab">Not Fixed</a></li>
+        </ul>
+      </li>
+	</ul>
+	<div class="tab-content">
+	  <div class="tab-pane active" id="assigned"></div>
+	  <div class="tab-pane" id="priority"></div>
+	  <div class="tab-pane" id="resolution"></div>
+	  <div class="tab-pane" id="status"></div>
+	  <div class="tab-pane" id="issue-type"></div>
+	</div>
+	<div id="my-issue-table"><img src="/static/img/ajax-spinner.gif" /></div>
+	<div id="more-issues" style="display:none; margin:auto; width:100px; font-size:12px"><a href="#">Load more Issues</a> </div>
+{% endif %}	
+</div>
+
+{% endblock %}

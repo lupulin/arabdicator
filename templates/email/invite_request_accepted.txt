@@ -1,0 +1,22 @@
+
+Dear {{ user.firstname }} {{ user.lastname }},
+
+	Good news!
+	
+	Your request to become a member has been accepted by one of our
+	administrators!
+	
+	The email that you used to request an account on the Arabdicator
+	is: {{ user.email }}
+	
+	Please use this email address to register your account otherwise
+	the Arabdicator won't know who you are.
+	
+	Simply go to the following URL and fill out the form on the right
+	side of the page.
+	
+	http://arabidopsis.osu.edu/pm/
+	
+Thanks,
+
+Arabdicator Administrator 

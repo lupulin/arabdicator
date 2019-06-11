@@ -1,0 +1,612 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{% block title %}Arabdicator | Home{% endblock %}</title>
+		<link rel="stylesheet" href="{% get_static_prefix %}css/bootstrap.css" />
+		<link rel="stylesheet" href="{% get_static_prefix %}css/bootstrap-responsive.css" />
+		<link rel="stylesheet" href="{% get_static_prefix %}css/smoothness/jquery-ui-1.10.1.custom.css" />
+		<link rel="stylesheet" href="{% get_static_prefix %}css/abrcpm.css" />
+	</head>
+	
+	<body>
+		
+		<!-- HEADER -->
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="active">
+								<a class="brand" href="/pm/system/">Arabdicator</a>
+							</li>
+						</ul>
+						<ul class="nav">
+							<li><a href="/pm/system/">Dashboard</a></li>							
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Events
+									<strong class="caret"></strong>
+								</a>
+							
+								<ul class="dropdown-menu">
+									<li><a href="#" data-toggle="modal" data-target="#newevent"><i class="icon-bell"></i> New Event</a></li>
+								</ul>
+								
+							</li>
+						</ul>
+						<ul class="nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Projects
+									<strong class="caret"></strong>
+								</a>
+								
+								<ul class="dropdown-menu">
+									<li><a href="#" data-toggle="modal" data-target="#newproject"><i class="icon-folder-open"></i> Create Project</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul class="nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Administration
+									<strong class="caret"></strong>
+								</a>
+								
+								<ul class="dropdown-menu">
+									<li><a href="#" onclick="javascript:system.editEmailServer()"><i class="icon-envelope"></i> Edit Email Server</a></li>
+									<li><a href="#" id="add-users"><i class="icon-pencil"></i> Add / Remove User</a></li>
+								</ul>
+							</li>
+						</ul>
+						<ul class="nav">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Settings
+									<strong class="caret"></strong>
+								</a>
+								
+								<ul class="dropdown-menu">
+									<li><a href="#" onclick="javascript:system.editProfile()"><i class="icon-user"></i> Edit Profile</a></li>																
+								</ul>
+							</li>
+						</ul>
+						<ul class="nav pull-right">
+							<li>
+								<a href="/pm/logout/" id="signout">Sign Out</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>	
+		</div>
+		
+		<!-- CONTENT -->
+		<div class="modal hide fade" id="addusers" tabindex="-1" role="dialog" aria-labelledby="addusersLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="addusersLabel">Add / Remove Users</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <div id="inviteTable"></div>
+		  </div>
+		</div>
+
+		<div class="modal hide fade" id="newproject" tabindex="-1" role="dialog" aria-labelledby="newprojectLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newprojectLabel">Create a Project</h3>
+		  </div>
+		  <div class="modal-body">
+		    <form class="form-horizontal">
+		    	<div class="control-group">
+		    		<label class="control-label">Project Key:</label>
+		    		<div class="controls">
+		    			<input type="text" id="project-key" />
+		    		</div>
+		    	</div>
+			    <div class="control-group">
+			    	<label class="control-label">Project Leader:</label>
+			    	<div class="controls staff"></div> 	
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Project Name:</label>
+				    <div class="controls">
+				    	<input type="text" id="project-name"/>
+				    </div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Description:</label>
+				    <div class="controls">
+				    	<textarea id="project-description"></textarea>
+				    </div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="create-project">Create Project</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="editProfile" tabindex="-1" role="dialog" aria-labelledby="newprojectLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newprojectLabel">Edit User Profile</h3>
+		  </div>
+		  <div class="modal-body">
+		    <form class="form-horizontal">
+		    	<div class="control-group">
+		    		<label class="control-label">Firstname:</label>
+		    		<div class="controls">
+		    			<input type="text" id="edit-firstname" />
+		    		</div>
+		    	</div>
+			    <div class="control-group">
+			    	<label class="control-label">Lastname:</label>
+			    	<div class="controls">
+			    		<input type="text" id="edit-lastname"/>
+			    	</div> 	
+			    </div>			    
+			    <div class="control-group">
+			    	<label class="control-label">Username:</label>
+			    	<div class="controls">
+			    		<input type="text" id="edit-username"/>
+			    	</div> 	
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Email:</label>
+				    <div class="controls">
+				    	<input type="text" id="edit-email"/>
+				    </div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="edit-profile-btn">Edit Profile</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="editEmailServer" tabindex="-1" role="dialog" aria-labelledby="newprojectLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newprojectLabel">Edit Email Server</h3>
+		  </div>
+		  <div class="modal-body">
+		    <form class="form-horizontal">
+		    	<div class="control-group">
+		    		<label class="control-label">Name:</label>
+		    		<div class="controls">
+		    			<input type="text" id="edit-emailserver-name" />
+		    		</div>
+		    	</div>	    
+			    <div class="control-group">
+			    	<label class="control-label">Hostname:</label>
+			    	<div class="controls">
+			    		<input type="text" id="edit-emailserver-host"/>
+			    	</div> 	
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Central Email Address:</label>
+				    <div class="controls">
+				    	<input type="text" id="edit-emailserver-email"/>
+				    </div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Port Number:</label>
+				    <div class="controls">
+				    	<input type="text" id="edit-emailserver-port"/>
+				    </div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Username:</label>
+				    <div class="controls">
+				    	<input type="text" id="edit-emailserver-username"/>
+				    </div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Password:</label>
+				    <div class="controls">
+				    	<input type="password" id="edit-emailserver-password"/>
+				    </div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="edit-emailserver-btn">Edit Email Server</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="editproject" tabindex="-1" role="dialog" aria-labelledby="editprojectLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="editprojectLabel">Edit a Project</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+		    	<div class="control-group">
+		    		<label class="control-label">Project Key:</label>
+		    		<div class="controls">
+		    			<input type="text" id="edit-project-key" />
+		    		</div>
+		    	</div>
+			    <div class="control-group">
+			    	<label class="control-label">Project Leader:</label>
+			    	<div class="controls lead"></div> 	
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Project Name:</label>
+				    <div class="controls">
+				    	<input type="text" id="edit-project-name"/>
+				    </div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Description:</label>
+				    <div class="controls">
+				    	<textarea id="edit-project-description"></textarea>
+				    </div>
+			    </div>
+			</form>
+		  </div>
+		  <div class="modal-footer">
+		    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+		    <button class="btn btn-primary" id="edit-project">Edit Project</button>
+		  </div>
+		</div>
+		
+		<div class="modal hide fade" id="newissue" tabindex="-1" role="dialog" aria-labelledby="newissueLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newissueLabel">Create an Issue</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+			    	<label class="control-label" for="projectLead">Reporter:</label>
+			    	<div class="controls">
+			    		<input type="text" value="" id="reporter" disabled="disabled" />
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label" for="project">Project:</label>
+			    	<div class="controls project" id="create-issue-project"></div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Issue Name:</label>
+				    <div class="controls">
+				    	<input type="text" class="span4" id="create-issue-name"/>
+				    </div>
+				</div>
+				<div class="control-group">
+			    	<label class="control-label">Description:</label>
+			    	<div class="controls">
+			    		<textarea class="span4" rows="5" id="create-issue-description"></textarea>
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Priority:</label>
+			    	<div class="controls priority" id="create-issue-priority"></div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Issue Type:</label>
+			    	<div class="controls issuetype" id="create-issue-issuetype"></div>
+			    </div>
+			
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="create-issue">Create Issue</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="newassignee" tabindex="-1" role="dialog" aria-labelledby="newassigneeLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newissueLabel">Add an Assignee</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+			    	<label class="control-label" for="assignee">Pick a new Assignee:</label>
+			    	<div class="controls staff" id="assignee"></div>
+			    	
+			    </div>
+			
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="add-assignee">Add Assignee</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="searchwords" tabindex="-1" role="dialog" aria-labelledby="searchWordsLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="searchWordsLabel">Edit Search Words</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+			    	<a href="javascript:void(0);" id="addNewWordLink">Add word...</a>
+			    	<div id="newWord" style="display:none">
+			    		<input type="text" id="newWordText" placeholder="Add new word" />
+			    		<button type="button" id="addNewWordBtn" >Add Word</button>
+			    	</div>
+			    	<div id="searchWordsTable"></div>			    	
+			    </div>			
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="newwatcher" tabindex="-1" role="dialog" aria-labelledby="newassigneeLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newissueLabel">Add a Watcher</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+			    	<label class="control-label" for="assignee">Pick a new Watcher:</label>
+			    	<div class="controls staff" id="watcher"></div>
+			    	
+			    </div>
+			
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="add-watcher">Add Watcher</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="invitationsModal" tabindex="-1" role="dialog" aria-labelledby="inviteLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newissueLabel">Accept / Reject Invitations</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+			    	<div id="invitations"></div>
+			    </div>
+			
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Done</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="newevent" tabindex="-1" role="dialog" aria-labelledby="neweventLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="neweventLabel">Create an Event</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW EVENT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+				    <label class="control-label">Event Name:</label>
+				    <div class="controls">
+				    	<input type="text" class="span4" id="create-event-name"/>
+				    </div>
+				</div>
+				<div class="control-group">
+			    	<label class="control-label">Description:</label>
+			    	<div class="controls">
+			    		<textarea class="span4" rows="5" id="create-event-description"></textarea>
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Location:</label>
+			    	<div class="controls">
+			    		<textarea class="span4" rows="5" id="create-event-location"></textarea>
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Start Date/Time:</label>
+			    	<div class="controls">
+			    		<div id="" class="input-append">
+					      <input type="text" class="span3" id="start-event-date"></input>
+					    </div>
+			    	</div>
+			    </div>
+				<div class="control-group">
+			    	<label class="control-label">End Date/Time:</label>
+			    	<div class="controls">
+			    		<div id="" class="input-append">
+					      <input type="text" class="span3" id="end-event-date"></input>
+					    </div>
+			    	</div>
+			    </div>
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="create-event">Create Event</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="add-template" tabindex="-1" role="dialog" aria-labelledby="neweventLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="neweventLabel">Create a Template</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW EVENT -->
+		    <form class="form-horizontal">
+		    	<div id="edit-template" style="display:none;">
+			    	<div class="control-group">
+					    <label class="control-label">Template Name:</label>
+					    <div class="controls">
+					    	<input type="text" class="span4" id="edit-template-name"/>
+					    </div>
+					</div>
+				    <div class="control-group">
+				    	<label class="control-label">Template:</label>
+				    	<div class="controls">
+				    		<textarea class="span4" rows="5" id="edit-template-text"></textarea>
+				    	</div>
+				    </div>
+				    <button class="btn btn-primary" id="edit-template-btn">Edit Template</button>
+			    </div>
+		    	<div id="create-template" style="display:none;">
+			    	<div class="control-group">
+					    <label class="control-label">Template Name:</label>
+					    <div class="controls">
+					    	<input type="text" class="span4" id="template-name"/>
+					    </div>
+					</div>
+				    <div class="control-group">
+				    	<label class="control-label">Template:</label>
+				    	<div class="controls">
+				    		<textarea class="span4" rows="5" id="new-template"></textarea>
+				    	</div>
+				    </div>
+				    <button class="btn btn-primary" id="create-template-btn">Create Template</button>
+			    </div>
+			    <div id="template-table"></div>
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="editevent" tabindex="-1" role="dialog" aria-labelledby="editeventLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="neweventLabel">Edit an Event</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW EVENT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+				    <label class="control-label">Event Name:</label>
+				    <div class="controls">
+				    	<input type="text" class="span4" id="edit-event-name"/>
+				    </div>
+				</div>
+				<div class="control-group">
+			    	<label class="control-label">Description:</label>
+			    	<div class="controls">
+			    		<textarea class="span4" rows="5" id="edit-event-description"></textarea>
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Location:</label>
+			    	<div class="controls">
+			    		<textarea class="span4" rows="5" id="edit-event-location"></textarea>
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Start Date/Time:</label>
+			    	<div class="controls">
+			    		<div id="" class="input-append">
+					      <input type="text" class="span3" id="edit-start-event-date"></input>
+					    </div>
+			    	</div>
+			    </div>
+				<div class="control-group">
+			    	<label class="control-label">End Date/Time:</label>
+			    	<div class="controls">			    		
+			    		<div id="" class="input-append">
+					      <input type="text" class="span3" id="edit-end-event-date"></input>
+					    </div>
+			    	</div>
+			    </div>
+			
+			</div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="edit-event">Edit Event</button>
+			  </div>
+		  </form>
+		</div>
+		
+		<div class="modal hide fade" id="editissue" tabindex="-1" role="dialog" aria-labelledby="newissueLabel" aria-hidden="true">
+		  <div class="modal-header">
+		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		    <h3 id="newissueLabel">Edit Issue</h3>
+		  </div>
+		  <div class="modal-body">
+		    <!-- FORM FOR A NEW PROJECT -->
+		    <form class="form-horizontal">
+			    <div class="control-group">
+			    	<label class="control-label" for="projectLead">Reporter:</label>
+			    	<div class="controls">
+			    		<input type="text" class="span4" id="edit-issue-reporter" disabled="disabled" />
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label" for="project">Project:</label>
+			    	<div class="controls project" id="edit-issue-project"></div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Issue Name:</label>
+				    <div class="controls">
+				    	<input type="text" class="span4" id="edit-issue-name"/>
+				    </div>
+				</div>
+				<div class="control-group">
+			    	<label class="control-label">Description:</label>
+			    	<div class="controls">
+			    		<textarea class="span4" rows="5" id="edit-issue-description"></textarea>
+			    	</div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Priority:</label>
+			    	<div class="controls priority" id="edit-issue-priority"></div>
+			    </div>
+			    <div class="control-group">
+			    	<label class="control-label">Issue Type:</label>
+			    	<div class="controls issuetype" id="edit-issue-type"></div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Status:</label>
+				    <div class="controls status" id="edit-issue-status"></div>
+			    </div>
+			    <div class="control-group">
+				    <label class="control-label">Resolution:</label>
+				    <div class="controls resolution" id="edit-issue-resolution"></div>
+			    </div>
+			  </div>
+			  <div class="modal-footer">
+			    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+			    <button class="btn btn-primary" id="edit-issue">Edit Issue</button>
+			  </div>
+		  </form>
+		</div>
+		{% block content %} {% endblock %}
+		
+			
+		<!-- FOOTER -->
+		
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui-1.10.1.custom.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui-timepicker.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/json2.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/moment.min.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/bootstrap.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/pm-api-client.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/system-pm.js"></script>
+		{% if event %} <script type="text/javascript" src="{% get_static_prefix %}js/event-pm.js"></script> {% endif %}
+	</body>
+	
+</html>

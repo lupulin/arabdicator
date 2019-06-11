@@ -1,0 +1,165 @@
+{% extends "system.html" %}
+
+{% block title %}Arabdicator | Issue Details{% endblock %}
+
+{% block content %}
+
+<legend><h1>{{ issue.name }} ( {{ issue.project.key }}-{{ issue.pk }} )</h1></legend>
+<script>
+	window.issue = {{ issue.id }};
+</script>
+<div class="row-fluid">
+  <div class="span8">
+  	<h3>Details<span class="pull-right"><a href="#" onclick="javascript:system.editIssue({{ issue.id }})" data-toggle="modal" data-target="#editissue"><i class="icon-wrench"></i></a></span></h3>
+  	
+  	<div class="row-fluid">
+	  <div class="span6">
+	  	<table class="table">
+	    	<tr>
+	    		<td>Type:</td>
+	    		<td>{{ issue.type }}</td>
+	    	</tr>
+	    	
+	    	<tr>
+	    		<td>Priority:</td>
+	    		<td>{{ issue.priority }}</td><a href="#"><i class="icon-plus pull-right" style="display:none;"></i></a>
+	    	</tr>
+	    
+	    </table>
+	  </div>
+	  
+	  <div class="span6">
+	    <table class="table">
+	    	<tr id="status">
+	    		<td>Status:</td>
+	    		<td>{{ issue.status }}<a href="#"><i class="icon-plus pull-right" style="display:none;" id="status-edit"></i></a></td>
+	    	</tr>
+	    	
+	    	<tr id="resolution">
+	    		<td>Resolution:</td>
+	    		<td>{{ issue.resolution }}<a href="#"><i class="icon-plus pull-right" style="display:none;" id="resolution-edit"></i></a></td>
+	    	</tr>
+	    </table>
+	  </div>
+	</div>
+	
+	<div class="row-fluid">
+	  <div class="span12">
+		<h3>Description</h3>
+		{% if issue.description_html %}
+		<div class="pull-right">
+			<input type="checkbox" id="change_html" checked />&nbsp;&nbsp;&nbsp;Use HTML
+		</div>
+		{% endif %}
+		
+		{% if issue.description_html %}
+		<div id="no_html" style="display:none;">
+			{% autoescape on %}
+			{{ issue.description|linebreaks }}
+			{% endautoescape %}
+		</div>
+		
+		<div id="use_html">
+			{% autoescape off %}
+			{{ issue.description_html }}
+			{% endautoescape %}
+		</div>
+		{% else %}
+		<div id="no_html">
+			{% autoescape on %}
+			{{ issue.description|linebreaks }}
+			{% endautoescape %}
+		</div>
+		{% endif %}
+		
+		<h3>Activity</h3>
+		<div id="add-comment">
+			<form method="post" action="/pm/comment/add/{{ issue.pk }}/" enctype="multipart/form-data">{% csrf_token %}
+				<textarea style="width: 100%" rows="5" placeholder="Add a comment" name="comment" id="create-comment-text" onclick="system.showAttachmentAddFiles()"></textarea>
+				
+				<div style="display:none; width: 100%; padding:5px; margin:5px;" id="attachment-add-files" class="alert-info">
+					<label>Add attachment(s) to this comment:</label>
+					<input type="file" name="attachments" multiple />
+				</div>
+				<input type="submit" class="btn btn-primary" value="Add Comment">
+				<select id="template-dropdown"></select>&nbsp;&nbsp; <a href="#" onclick="system.populateTemplateTable();">Edit Templates</a>
+				<div class="pull-right"><input type="checkbox" name="staff_only" id="email_staff" /> Email only Staff </div>
+			</form>
+		</div>
+		{% for c in comments %}
+			<div class="comment-full">
+				<div id="comment{{ c.id }}" class="comment-header">
+				{% if c.commenter.first_name == "Anonymous" %}
+				<a href="#">{{ c.commenter.email }}</a> made a comment - {{ c.pub_date }}
+				{% else %}
+				<a href="#">{{ c.commenter.first_name }} {{ c.commenter.last_name }}</a> made a comment - {{ c.pub_date }}
+				{% endif %}
+					<div class="comment">
+						{{ c.comment|linebreaks }}
+					</div>
+				</div>
+			</div>
+		{% empty %}
+			Nothing here yet.
+		{% endfor %}
+	  </div>
+	</div>
+	
+  </div>
+  
+  <div class="span4">
+  	<h3>People</h3>
+  	<table class="table">
+  		
+    	<tr>
+    		<td>Reporter:</td>
+    		{% if issue.reporter.first_name == "Anonymous" %}
+			<td><a href="/pm/user_details/{{ issue.reporter.id }}/">{{ issue.reporter.email }}</a></td>
+			{% else %}
+			<td><a href="/pm/user_details/{{ issue.reporter.id }}/">{{ issue.reporter.first_name }} {{ issue.reporter.last_name }}</a></td>
+			{% endif %}
+    	</tr>
+    	
+    	<tr>
+    		<td><a href="#"><i class="icon-plus" id="add-assignee" onclick="system.addAssignee({{ issue.pk }})"></i></a>&nbsp;&nbsp;&nbsp;Assignee(s):</td>
+    		<td>
+    			{% for a in issue.assignees.all %}
+    			<div id="assignee{{ a.id }}">
+    				 <a href="/pm/user_details/{{ a.id }}/">{{ a.first_name }} {{ a.last_name }}</a> 
+    				 <a href="#"><i class="icon-remove pull-right" onclick="system.deleteAssignee({{ issue.pk }}, {{ a.id }})"></i></a>
+    			</div>
+    			{% empty %}
+    				No one yet
+    			{% endfor %}
+    		</td>
+    	</tr>
+    
+    	<tr>
+    		<td><a href="#"><i class="icon-plus" id="add-watcher" onclick="system.addWatcher({{ issue.pk }});"></i></a>&nbsp;&nbsp;&nbsp;Watcher(s):</td>
+    		<td>
+    			{% for w in issue.watchers.all %}
+    			<div id="watcher{{ w.id }}">
+    				<a href="/pm/user_details/{{ w.id }}/">{{ w.first_name }} {{ w.last_name }}</a> 
+    				<a href="#"><i class="icon-remove pull-right" onclick="system.deleteWatcher({{ issue.pk }}, {{ w.id }})"></i></a>
+    			{% empty %}
+    				No one yet
+    			</div>
+    			{% endfor %}
+    		</td>
+    	</tr>
+    	
+    </table>
+    
+    <h3>Attachments</h3>
+  		{% for a in attachments %}
+  			<div>
+    			<a href="/media/{{ a.name }}">{{ a.name }}</a>
+    		</div>
+    	{% empty %}
+    		<p>No attachments</p>
+    	{% endfor %}
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,20 @@
+
+Dear {{ user.firstname }} {{ user.lastname }},
+
+	Thank you for your interest in using the Arabdicator for
+	your Project Management needs.
+	
+	Your information has been successfully been logged and 
+	one of our administrators will review your information
+	and determine at that time if you should be accepted 
+	to use our system.
+	
+	At that time, you will receive detailed instructions in
+	how to create an account so that you can use the 
+	Arabdicator.
+	
+	We'll be in touch soon! 
+	
+Thanks,
+
+Arabdicator Administrator 

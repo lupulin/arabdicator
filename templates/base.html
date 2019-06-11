@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-us">
+	<head>
+		<title>{% block title %}Arabdicator | System{% endblock %}</title>
+		<link rel="stylesheet" href="{% get_static_prefix %}css/bootstrap.css" />
+		<link rel="stylesheet" href="{% get_static_prefix %}css/bootstrap-responsive.css" />
+		<link rel="stylesheet" href="{% get_static_prefix %}css/abrcpm.css" />
+		<meta charset="utf-8">
+  		<meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1">
+	</head>
+	
+	<body>
+		<!-- HEADER -->
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li class="active">
+								<a class="brand" href="#">Arabdicator</a>
+							</li>
+						</ul>
+						
+						<ul class="nav pull-right">
+							<li class="divider-vertical"></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									Sign In
+									<strong class="caret"></strong>
+								</a>
+								
+								<ul class="dropdown-menu" style="padding: 15px; padding-bottom: 0;">
+									<form action="/pm/login/" method="post">{% csrf_token %}
+										<input type="text" name="username" id="usernameSignin" style="margin-bottom: 15px;" size="30" placeholder="Username">
+										<input type="password" name="password" id="passwordSignin" style="margin-bottom: 15px;" size="30" placeholder="Password">
+										<input type="submit" id="signin" class="btn btn-primary" value="Sign In" style="width: 100%; clear: left; margin-bottom: 15px;"/>
+										 
+									</form>
+								</ul>
+							</li>
+							<li class="divider-vertical"></li>
+						</ul>
+					</div>
+				</div>
+			</div>	
+		</div>
+		
+		<!-- CONTENT -->
+		
+		<div class="container-fluid"  style="margin-top: 15px;">
+		{% block content %}{% endblock %}
+		</div>
+		<!-- FOOTER -->
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui-1.10.1.custom.min.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/jquery-ui-timepicker.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/json2.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/bootstrap.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/pm-api-client.js"></script>
+		<script type="text/javascript" src="{% get_static_prefix %}js/abrc-pm.js"></script>
+	</body>
+	
+</html>
